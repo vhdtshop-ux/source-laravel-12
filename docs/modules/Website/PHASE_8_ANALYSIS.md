@@ -6,7 +6,7 @@
 - Analysis: `COMPLETE`
 - Implementation: `COMPLETE`
 - CLI release gate: `PASS`
-- UI release smoke gate: `PENDING USER VERIFICATION`
+- UI release smoke gate: `PASS — USER APPROVED 2026-08-11`
 
 ## Zero-caller audit
 

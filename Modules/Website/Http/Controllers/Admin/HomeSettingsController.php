@@ -13,7 +13,7 @@ class HomeSettingsController extends Controller
     {
         // Trả về view nằm trong thư mục pages/home
         return view('Website::pages.admin.home.index', [
-            'title' => 'Cấu hình Trang chủ'
+            'title' => 'Cấu hình Trang chủ',
         ]);
     }
     // End 1.

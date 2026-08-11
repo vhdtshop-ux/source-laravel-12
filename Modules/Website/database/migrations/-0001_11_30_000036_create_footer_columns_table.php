@@ -10,13 +10,12 @@ return new class extends Migration
     {
         Schema::create('footer_columns', function (Blueprint $table) {
 
-        
-                            $table->id();
-                            $table->string('title'); // Tiêu đề cột
-                            $table->string('slug')->unique(); // Định danh để query
-                            $table->integer('sort_order')->default(0);
-                            $table->boolean('is_active')->default(true);
-                            $table->timestamps();
+            $table->id();
+            $table->string('title'); // Tiêu đề cột
+            $table->string('slug')->unique(); // Định danh để query
+            $table->integer('sort_order')->default(0);
+            $table->boolean('is_active')->default(true);
+            $table->timestamps();
         });
     }
 

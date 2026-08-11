@@ -10,11 +10,10 @@ return new class extends Migration
     {
         Schema::create('newsletters', function (Blueprint $table) {
 
-        
-                            $table->id();
-                            $table->string('email')->unique();
-                            $table->boolean('is_subscribed')->default(true);
-                            $table->timestamps();
+            $table->id();
+            $table->string('email')->unique();
+            $table->boolean('is_subscribed')->default(true);
+            $table->timestamps();
         });
     }
 

@@ -8,11 +8,11 @@ class FooterLink extends Model
 {
     protected $fillable = [
         'footer_column_id', 'label', 'url',
-        'route_name', 'new_tab', 'sort_order', 'is_active'
+        'route_name', 'new_tab', 'sort_order', 'is_active',
     ];
 
     protected $casts = [
         'new_tab' => 'boolean',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
     ];
 }

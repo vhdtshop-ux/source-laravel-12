@@ -2,14 +2,14 @@
 
 namespace Modules\Website\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\User; // Giả sử User model mặc định của Laravel
+use Illuminate\Database\Eloquent\Relations\HasMany; // Giả sử User model mặc định của Laravel
 
 class Cart extends Model
 {
-    protected $fillable = ['session_id', 'user_id','coupon_id'];
+    protected $fillable = ['session_id', 'user_id', 'coupon_id'];
 
     public function items(): HasMany
     {
@@ -20,6 +20,7 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function coupon()
     {
         return $this->belongsTo(Coupon::class);

@@ -1,7 +1,7 @@
 # Website Module Analysis
 
 > Post-refactor update (Phase 8): the original findings below are retained as
-> historical baseline. Phases 1–7 are closed and the Phase 8 CLI release gate
+> historical baseline. Phases 1–8 are closed and the Phase 8 release gate
 > passes. Duplicate cross-domain models/services, checkout integrity defects,
 > authorization gaps, CMS limitations and production optimization items described
 > in the original analysis have been addressed. See `PHASE_8_COMPLETION.md` for

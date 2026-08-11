@@ -2,9 +2,9 @@
 
 namespace Modules\Website\Livewire\Checkout;
 
-use Livewire\Component;
-use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\App;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
 use Modules\Website\Services\CartService;
 
 class OrderSummary extends Component
@@ -26,7 +26,9 @@ class OrderSummary extends Component
 
     public function applyCoupon()
     {
-        if (empty($this->couponCode)) return;
+        if (empty($this->couponCode)) {
+            return;
+        }
 
         try {
             $this->getCartService()->applyCoupon($this->couponCode);

@@ -1,6 +1,7 @@
 <?php
 
 namespace Modules\Website\Http\Controllers;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -16,11 +17,13 @@ class WebsiteController extends Controller
         //  $this->middleware('permission:website-edit', ['only' => ['edit','update']]);
         //  $this->middleware('permission:website-delete', ['only' => ['destroy']]);
     }
+
     public function home()
     {
 
         return view('Website::pages.home.index');
     }
+
     public function help()
     {
         return view('Website::pages.help.index');

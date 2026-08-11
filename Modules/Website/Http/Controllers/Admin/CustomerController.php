@@ -33,6 +33,7 @@ class CustomerController extends Controller
     {
         return view('Website::pages.admin.customers.show', compact('id')); // Truyền ID sang View
     }
+
     public function create()
     {
         return view('Website::pages.admin.customers.create');

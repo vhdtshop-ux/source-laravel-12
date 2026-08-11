@@ -33,6 +33,7 @@ class FlashSale extends Model
     public function getIsRunningAttribute()
     {
         $now = now();
+
         return $this->is_active && $this->start_time <= $now && $this->end_time >= $now;
     }
     // End 2.

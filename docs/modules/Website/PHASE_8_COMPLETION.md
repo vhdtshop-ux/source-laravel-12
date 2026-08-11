@@ -9,8 +9,8 @@
 - Production asset build: `PASS`
 - HTTP smoke gate: `PASS`
 - Full repository suite: `KNOWN UNRELATED FAILURES`
-- UI release smoke gate: `PENDING USER VERIFICATION`
-- Final status: `AWAITING UI APPROVAL`
+- UI release smoke gate: `PASS — USER APPROVED 2026-08-11`
+- Final status: `CLOSED`
 
 ## Cleanup
 

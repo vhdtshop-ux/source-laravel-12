@@ -2,16 +2,14 @@
 
 namespace Modules\Website\Services;
 
+use Illuminate\Support\Facades\Cache;
 use Modules\Website\Models\FooterColumn;
 use Modules\Website\Models\FooterLink;
 use Modules\Website\Models\SocialLink;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class FooterService
 {
     /* ================= SOCIAL LINKS ================= */
-
 
     public function updateSocialLinks(array $data): void
     {
@@ -40,6 +38,7 @@ class FooterService
     {
         $col = FooterColumn::create($data);
         $this->clearCache(); // ✅ Xóa cache ngay
+
         return $col;
     }
 
@@ -50,8 +49,10 @@ class FooterService
         if ($col) {
             $col->delete();
             $this->clearCache(); // ✅ Xóa cache ngay
+
             return true;
         }
+
         return false;
     }
 
@@ -60,6 +61,7 @@ class FooterService
         $data['footer_column_id'] = $columnId;
         $link = FooterLink::create($data);
         $this->clearCache(); // ✅ Xóa cache ngay
+
         return $link;
     }
 
@@ -68,16 +70,18 @@ class FooterService
         $link = FooterLink::findOrFail($linkId);
         $link->delete();
         $this->clearCache(); // ✅ Xóa cache ngay
+
         return true;
     }
 
     // Helper để xóa cache gọn gàng
     private function clearCache()
     {
-        //Cache::forget('footer_columns_full');
+        // Cache::forget('footer_columns_full');
         Cache::forget('footer_columns_admin');
         Cache::forget('footer_columns_frontend');
     }
+
     // Cập nhật thông tin Link
     public function updateLink(int $id, array $data): bool
     {
@@ -85,8 +89,10 @@ class FooterService
         if ($link) {
             $link->update($data);
             $this->clearCache(); // Xóa cache
+
             return true;
         }
+
         return false;
     }
 
@@ -99,6 +105,7 @@ class FooterService
         }
         $this->clearCache();
     }
+
     // Cập nhật thứ tự Cột
     public function updateColumnOrder(array $orderedIds): void
     {
@@ -113,12 +120,15 @@ class FooterService
     {
         $col = FooterColumn::find($id);
         if ($col) {
-            $col->update(['is_active' => !$col->is_active]); // Đảo ngược trạng thái
+            $col->update(['is_active' => ! $col->is_active]); // Đảo ngược trạng thái
             $this->clearCache();
+
             return true;
         }
+
         return false;
     }
+
     /**
      * Dành cho ADMIN: Lấy tất cả cột và link (kể cả ẩn)
      */
@@ -150,14 +160,17 @@ class FooterService
                 ->get();
         });
     }
+
     public function updateColumn(int $id, array $data): bool
     {
         $col = FooterColumn::find($id);
         if ($col) {
             $col->update($data);
             $this->clearCache(); // Xóa cache admin & frontend
+
             return true;
         }
+
         return false;
     }
     // ... (Các method cũ giữ nguyên)
@@ -170,8 +183,10 @@ class FooterService
         if ($link) {
             $link->update($data);
             Cache::forget('social_links'); // Xóa cache
+
             return true;
         }
+
         return false;
     }
 
@@ -182,7 +197,6 @@ class FooterService
         }
         Cache::forget('social_links');
     }
-
 
     /* ================= SOCIAL LINKS ================= */
 

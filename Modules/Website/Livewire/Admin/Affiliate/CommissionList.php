@@ -11,7 +11,7 @@ use Modules\Website\Services\AdminAffiliateService;
 
 class CommissionList extends Component
 {
-    use WithPagination, AuthorizesAdminPermissions;
+    use AuthorizesAdminPermissions, WithPagination;
 
     #[Url]
     public $statusFilter = 'all';
@@ -23,8 +23,11 @@ class CommissionList extends Component
     public $search = '';
 
     public $selectedOrder = null;
+
     public $isModalOpen = false;
+
     public $showRejectForm = false;
+
     public $rejectionReason = '';
 
     public function approve($orderId, AdminAffiliateService $service)

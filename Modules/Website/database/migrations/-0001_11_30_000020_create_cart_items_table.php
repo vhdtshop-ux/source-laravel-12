@@ -10,14 +10,13 @@ return new class extends Migration
     {
         Schema::create('cart_items', function (Blueprint $table) {
 
-        
-                            $table->id();
-                            $table->foreignId('cart_id')->constrained('carts')->cascadeOnDelete();
-                            $table->foreignId('product_id')->nullable()->constrained('wp_products')->cascadeOnDelete();
-                            $table->decimal('price', 10, 2);
-                            $table->integer('quantity');
-                            $table->decimal('total', 10, 2);
-                            $table->timestamps();
+            $table->id();
+            $table->foreignId('cart_id')->constrained('carts')->cascadeOnDelete();
+            $table->foreignId('product_id')->nullable()->constrained('wp_products')->cascadeOnDelete();
+            $table->decimal('price', 10, 2);
+            $table->integer('quantity');
+            $table->decimal('total', 10, 2);
+            $table->timestamps();
         });
     }
 

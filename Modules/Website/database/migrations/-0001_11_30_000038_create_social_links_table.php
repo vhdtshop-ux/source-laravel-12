@@ -10,17 +10,16 @@ return new class extends Migration
     {
         Schema::create('social_links', function (Blueprint $table) {
 
-        
-                            $table->id();
-                            $table->string('platform'); // facebook, youtube, twitter
-                            $table->string('name'); // Hiển thị tooltip
-                            $table->string('url');
-                            $table->string('icon_class')->nullable(); // FontAwesome hoặc SVG path
-                            $table->string('bg_color')->nullable(); // VD: hover:bg-blue-600 (cho tailwind)
-        
-                            $table->integer('sort_order')->default(0);
-                            $table->boolean('is_active')->default(true);
-                            $table->timestamps();
+            $table->id();
+            $table->string('platform'); // facebook, youtube, twitter
+            $table->string('name'); // Hiển thị tooltip
+            $table->string('url');
+            $table->string('icon_class')->nullable(); // FontAwesome hoặc SVG path
+            $table->string('bg_color')->nullable(); // VD: hover:bg-blue-600 (cho tailwind)
+
+            $table->integer('sort_order')->default(0);
+            $table->boolean('is_active')->default(true);
+            $table->timestamps();
         });
     }
 

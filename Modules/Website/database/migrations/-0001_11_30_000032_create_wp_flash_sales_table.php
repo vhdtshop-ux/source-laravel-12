@@ -10,15 +10,14 @@ return new class extends Migration
     {
         Schema::create('wp_flash_sales', function (Blueprint $table) {
 
-        
-                            $table->id();
-        
-                            $table->string('title')->comment('Tên chương trình (vd: Sale 9.9)');
-                            $table->dateTime('start_time')->comment('Thời gian bắt đầu');
-                            $table->dateTime('end_time')->comment('Thời gian kết thúc');
-                            $table->boolean('is_active')->default(true);
-        
-                            $table->timestamps();
+            $table->id();
+
+            $table->string('title')->comment('Tên chương trình (vd: Sale 9.9)');
+            $table->dateTime('start_time')->comment('Thời gian bắt đầu');
+            $table->dateTime('end_time')->comment('Thời gian kết thúc');
+            $table->boolean('is_active')->default(true);
+
+            $table->timestamps();
         });
     }
 

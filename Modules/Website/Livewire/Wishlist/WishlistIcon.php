@@ -2,10 +2,10 @@
 
 namespace Modules\Website\Livewire\Wishlist;
 
-use Livewire\Component;
-use Livewire\Attributes\On; // Dùng để lắng nghe sự kiện
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth; // Dùng để lắng nghe sự kiện
+use Livewire\Attributes\On;
+use Livewire\Component;
 use Modules\Website\Services\WishlistService;
 
 class WishlistIcon extends Component

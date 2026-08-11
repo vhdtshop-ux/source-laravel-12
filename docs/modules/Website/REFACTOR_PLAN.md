@@ -26,7 +26,7 @@ Application source must not be changed outside the active phase scope.
 - Phase 5 — Website Admin CMS: `[x] IMPLEMENTED / TESTED / APPROVED — CLOSED`
 - Phase 6 — Frontend Professionalization: `[x] IMPLEMENTED / TESTED / APPROVED — CLOSED`
 - Phase 7 — Production Optimization: `[x] IMPLEMENTED / TESTED / APPROVED — CLOSED`
-- Phase 8 — Release Gate: `[~] IMPLEMENTED / RELEASE TESTED — UI APPROVAL PENDING`
+- Phase 8 — Release Gate: `[x] IMPLEMENTED / TESTED / APPROVED — CLOSED`
 
 ---
 
@@ -749,7 +749,8 @@ Remove obsolete compatibility code only after all callers have migrated and comp
 - [x] ANALYZED
 - [x] IMPLEMENTED
 - [x] TESTED — release CLI gate
-- [ ] APPROVED
+- [x] APPROVED — UI release smoke verified by user on 2026-08-11
+- Decision: `CLOSED`
 
 ## Cleanup
 

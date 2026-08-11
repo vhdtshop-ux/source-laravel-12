@@ -8,10 +8,10 @@ class SocialLink extends Model
 {
     protected $fillable = [
         'platform', 'name', 'url', 'icon_class',
-        'bg_color', 'sort_order', 'is_active'
+        'bg_color', 'sort_order', 'is_active',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
     ];
 }

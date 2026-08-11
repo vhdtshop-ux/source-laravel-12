@@ -10,12 +10,11 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
 
-        
-                            $table->id();
-                            $table->string('session_id')->index();
-                            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-                            $table->foreignId('coupon_id')->nullable()->constrained('coupons')->nullOnDelete();
-                            $table->timestamps();
+            $table->id();
+            $table->string('session_id')->index();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('coupon_id')->nullable()->constrained('coupons')->nullOnDelete();
+            $table->timestamps();
         });
     }
 

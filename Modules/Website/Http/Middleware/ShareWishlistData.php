@@ -4,11 +4,11 @@ namespace Modules\Website\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Modules\Website\Services\WishlistService;
+use Symfony\Component\HttpFoundation\Response;
 
 class ShareWishlistData
 {

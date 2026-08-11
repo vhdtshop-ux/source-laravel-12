@@ -10,14 +10,13 @@ return new class extends Migration
     {
         Schema::create('wishlists', function (Blueprint $table) {
 
-        
-                            $table->id();
-                            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-                            $table->foreignId('product_id')->constrained('wp_products')->cascadeOnDelete();
-                            $table->timestamps();
-        
-                            // Unique: 1 User chỉ like 1 sản phẩm 1 lần
-                            $table->unique(['user_id', 'product_id']);
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained('wp_products')->cascadeOnDelete();
+            $table->timestamps();
+
+            // Unique: 1 User chỉ like 1 sản phẩm 1 lần
+            $table->unique(['user_id', 'product_id']);
         });
     }
 

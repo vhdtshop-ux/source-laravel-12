@@ -14,7 +14,7 @@ class Setting extends Model
         'value',
         'group_name',
         'type', // text, textarea, editor, json, image, boolean
-        'label'
+        'label',
     ];
 
     // ✅ UPDATE: Tự động cast value dựa trên type nếu cần thiết,
@@ -31,8 +31,9 @@ class Setting extends Model
     // Helper: Lấy giá trị (giữ nguyên logic cache của bạn)
     public static function getValue($key, $default = null)
     {
-        return Cache::rememberForever('setting_' . $key, function () use ($key, $default) {
+        return Cache::rememberForever('setting_'.$key, function () use ($key, $default) {
             $setting = self::where('key', $key)->first();
+
             return $setting ? $setting->value : $default;
         });
     }
@@ -48,7 +49,7 @@ class Setting extends Model
             ['key' => $key],
             ['value' => $value, 'group_name' => $group]
         );
-        Cache::forget('setting_' . $key);
-        Cache::forget('wp_opt_' . $key);
+        Cache::forget('setting_'.$key);
+        Cache::forget('wp_opt_'.$key);
     }
 }

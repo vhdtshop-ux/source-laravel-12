@@ -12,14 +12,31 @@ class FooterColumns extends Component
     use AuthorizesAdminPermissions;
 
     public $activeColumnId = null;
-    public $col_title, $col_slug, $col_sort = 0;
-    public $link_label, $link_url, $link_sort = 0;
+
+    public $col_title;
+
+    public $col_slug;
+
+    public $col_sort = 0;
+
+    public $link_label;
+
+    public $link_url;
+
+    public $link_sort = 0;
+
     public $new_links = [];
+
     public $editingLinkId = null;
+
     public $edit_label;
+
     public $edit_url;
+
     public $editingColumnId = null;
+
     public $edit_col_title;
+
     public $edit_col_slug;
 
     public function render(FooterService $service)
@@ -62,11 +79,13 @@ class FooterColumns extends Component
 
         if (empty($input['label'])) {
             $this->addError("new_links.$columnId.label", 'Vui lòng nhập tên link');
+
             return;
         }
 
         if (! FooterColumn::where('id', $columnId)->exists()) {
             $this->dispatch('show-toast', ['type' => 'error', 'message' => 'Cột không tồn tại. F5 lại trang!']);
+
             return;
         }
 
@@ -157,7 +176,7 @@ class FooterColumns extends Component
         $this->authorizeAdminPermission('website.footer.manage');
         $this->validate([
             'edit_col_title' => 'required|string|max:255',
-            'edit_col_slug' => 'required|string|max:255|unique:footer_columns,slug,' . $this->editingColumnId,
+            'edit_col_slug' => 'required|string|max:255|unique:footer_columns,slug,'.$this->editingColumnId,
         ]);
 
         $service->updateColumn($this->editingColumnId, [

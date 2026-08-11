@@ -2,10 +2,10 @@
 
 namespace Modules\Website\Livewire\Account\Affiliate;
 
-use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\Attributes\Url; // Để lưu filter lên URL
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Url;
+use Livewire\Component; // Để lưu filter lên URL
+use Livewire\WithPagination;
 use Modules\Website\Services\AffiliateService;
 
 class AffiliateDashboard extends Component
@@ -13,6 +13,7 @@ class AffiliateDashboard extends Component
     use WithPagination;
 
     public $referralCode;
+
     public $referralLink;
 
     // Filter
@@ -21,6 +22,7 @@ class AffiliateDashboard extends Component
 
     // Modal State
     public $isModalOpen = false;
+
     public $selectedOrder = null;
 
     public function mount()
@@ -64,7 +66,7 @@ class AffiliateDashboard extends Component
 
         return view('Website::livewire.account.affiliate.affiliate-dashboard', [
             'stats' => $stats,
-            'commissions' => $commissions
+            'commissions' => $commissions,
         ]);
     }
 }

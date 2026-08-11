@@ -9,12 +9,12 @@ class HeaderMenuItem extends Model
     protected $fillable = [
         'header_menu_id', 'parent_id', 'title', 'url',
         'route_name', 'params', 'icon', 'target',
-        'sort_order', 'is_active'
+        'sort_order', 'is_active',
     ];
 
     protected $casts = [
         'params' => 'array',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
     ];
 
     public function children()

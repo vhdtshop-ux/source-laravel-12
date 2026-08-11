@@ -4,8 +4,8 @@ namespace Modules\Website\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 
 class TrackAffiliate
@@ -19,8 +19,8 @@ class TrackAffiliate
 
             // 2. Logic: Không cho phép tự giới thiệu chính mình (nếu đang đăng nhập)
             // Nếu chưa đăng nhập ($currentUserId null) thì vẫn ghi nhận bình thường
-            if (!$currentUserId || $currentUserId != $referralId) {
-                
+            if (! $currentUserId || $currentUserId != $referralId) {
+
                 // 3. Tạo Cookie 'affiliate_ref' tồn tại 30 ngày (phút * giờ * ngày)
                 // queue() sẽ tự động gắn cookie vào response
                 Cookie::queue('affiliate_ref', $referralId, 60 * 24 * 30);

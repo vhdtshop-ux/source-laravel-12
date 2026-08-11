@@ -2,10 +2,10 @@
 
 namespace Modules\Website\Livewire\Cart;
 
-use Livewire\Component;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\App;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Component;
 use Modules\Website\Services\CartService;
 
 class CartIcon extends Component

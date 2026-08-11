@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 
-            $table->foreignId('affiliate_level_id')->nullable()->after('email')->constrained('affiliate_levels')->nullOnDelete();            
+            $table->foreignId('affiliate_level_id')->nullable()->after('email')->constrained('affiliate_levels')->nullOnDelete();
         });
     }
 

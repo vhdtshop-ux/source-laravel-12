@@ -2,10 +2,10 @@
 
 namespace Modules\Website\Livewire\Account;
 
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\App;
 use Modules\Website\Services\WishlistService;
 
 class WishlistPage extends Component
@@ -31,7 +31,7 @@ class WishlistPage extends Component
 
         return view('Website::livewire.account.wishlist-page', [
             'products' => $products,
-            'wishlistIds' => $wishlistIds
+            'wishlistIds' => $wishlistIds,
         ]);
     }
 }

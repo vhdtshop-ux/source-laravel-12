@@ -11,9 +11,21 @@ class SocialLinks extends Component
 {
     use AuthorizesAdminPermissions;
 
-    public $platform, $url, $icon_class, $sort_order = 0;
+    public $platform;
+
+    public $url;
+
+    public $icon_class;
+
+    public $sort_order = 0;
+
     public $editingId = null;
-    public $edit_platform, $edit_url, $edit_icon_class;
+
+    public $edit_platform;
+
+    public $edit_url;
+
+    public $edit_icon_class;
 
     public $defaultIcons = [
         'fab fa-facebook' => 'Facebook',

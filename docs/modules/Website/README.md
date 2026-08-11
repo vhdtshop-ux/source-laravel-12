@@ -70,7 +70,7 @@ Do not treat Website's nested environment/database management services as canoni
 
 ## Operational Notes
 
-Release status: Phases 1–7 are closed; Phase 8 release CLI gate passes. Node.js
+Release status: Phases 1–8 are closed; the release CLI and UI gates pass. Node.js
 must be upgraded to a Vite-supported LTS version before production deployment.
 
 ## Developer Notes

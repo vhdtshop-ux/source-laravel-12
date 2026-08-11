@@ -1,16 +1,15 @@
 <?php
 
 namespace Modules\Website\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 
 class WebsiteController extends Controller
 {
-   public function index()
+    public function index()
     {
         return response()->json([
-            'status' => 'Api Website success',            
+            'status' => 'Api Website success',
         ]);
-    }  
-
+    }
 }

@@ -2,10 +2,10 @@
 
 namespace Modules\Website\Livewire\Cart;
 
-use Livewire\Component;
-use Livewire\Attributes\Computed;
-use Modules\Website\Services\CartService;
 use Illuminate\Support\Facades\App;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
+use Modules\Website\Services\CartService;
 
 class CartList extends Component
 {
@@ -15,7 +15,7 @@ class CartList extends Component
     protected function getCartService()
     {
         return App::make(CartService::class);
-    } 
+    }
 
     #[Computed]
     public function cartData()
@@ -72,8 +72,8 @@ class CartList extends Component
 
     public function removeCoupon()
     {
-         $this->getCartService()->removeCoupon();
-         $this->dispatch('notify', ['type' => 'success', 'message' => 'Đã gỡ mã giảm giá']);
+        $this->getCartService()->removeCoupon();
+        $this->dispatch('notify', ['type' => 'success', 'message' => 'Đã gỡ mã giảm giá']);
     }
 
     public function render()

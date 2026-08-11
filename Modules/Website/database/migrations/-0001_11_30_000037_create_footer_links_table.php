@@ -10,18 +10,17 @@ return new class extends Migration
     {
         Schema::create('footer_links', function (Blueprint $table) {
 
-        
-                            $table->id();
-                            $table->foreignId('footer_column_id')->constrained()->cascadeOnDelete();
-        
-                            $table->string('label');
-                            $table->string('url')->nullable();
-                            $table->string('route_name')->nullable();
-                            $table->boolean('new_tab')->default(false);
-        
-                            $table->integer('sort_order')->default(0);
-                            $table->boolean('is_active')->default(true);
-                            $table->timestamps();
+            $table->id();
+            $table->foreignId('footer_column_id')->constrained()->cascadeOnDelete();
+
+            $table->string('label');
+            $table->string('url')->nullable();
+            $table->string('route_name')->nullable();
+            $table->boolean('new_tab')->default(false);
+
+            $table->integer('sort_order')->default(0);
+            $table->boolean('is_active')->default(true);
+            $table->timestamps();
         });
     }
 
