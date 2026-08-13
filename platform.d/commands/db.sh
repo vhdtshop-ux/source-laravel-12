@@ -25,9 +25,13 @@ EXAMPLES
 EOF
 }
 
+DB_HOST="$(read_env_value DB_HOST "$LARAVEL_ENV" || true)"
+DB_PORT="$(read_env_value DB_PORT "$LARAVEL_ENV" || true)"
 DB_DATABASE="$(read_env_value DB_DATABASE "$LARAVEL_ENV" || true)"
 DB_USERNAME="$(read_env_value DB_USERNAME "$LARAVEL_ENV" || true)"
 DB_PASSWORD="$(read_env_value DB_PASSWORD "$LARAVEL_ENV" || true)"
+DB_HOST="${DB_HOST:-db}"
+DB_PORT="${DB_PORT:-3306}"
 [[ -n "$DB_DATABASE" ]] || die "Thiếu DB_DATABASE"
 [[ -n "$DB_USERNAME" ]] || die "Thiếu DB_USERNAME"
 
@@ -37,15 +41,80 @@ detect_client() {
   else die "Container db không có mariadb/mysql client"
   fi
 }
+
 detect_dump() {
   if compose_cmd exec -T db sh -lc 'command -v mariadb-dump' >/dev/null 2>&1; then echo mariadb-dump
   elif compose_cmd exec -T db sh -lc 'command -v mysqldump' >/dev/null 2>&1; then echo mysqldump
-  else die "Container db không có mariadb-dump/mysqldump"
+  else return 1
   fi
 }
+
 db_exec() {
   local client="$1"; shift
   compose_cmd exec -T -e MYSQL_PWD="$DB_PASSWORD" db "$client" -u "$DB_USERNAME" "$@"
+}
+
+db_container_network() {
+  command -v docker >/dev/null 2>&1 || die "Thiếu docker cho database dump fallback"
+
+  local cid network
+  cid="$(compose_cmd ps -q db 2>/dev/null | head -n1)"
+  [[ -n "$cid" ]] || die "Không tìm thấy container db đang chạy"
+
+  network="$(docker inspect -f '{{range $name, $_ := .NetworkSettings.Networks}}{{println $name}}{{end}}' "$cid" 2>/dev/null | head -n1)"
+  [[ -n "$network" ]] || die "Không xác định được Docker network của container db"
+  printf '%s' "$network"
+}
+
+db_dump_fallback() {
+  local network image
+  network="$(db_container_network)"
+  image="${DB_DUMP_FALLBACK_IMAGE:-mariadb:11}"
+
+  if ! docker image inspect "$image" >/dev/null 2>&1; then
+    warn "Không có dump client trong container db. Đang pull fallback image: $image"
+    docker pull "$image" >/dev/null
+  else
+    warn "Không có dump client trong container db. Dùng fallback image: $image"
+  fi
+
+  docker run --rm \
+    --network "$network" \
+    -e MYSQL_PWD="$DB_PASSWORD" \
+    "$image" \
+    mariadb-dump \
+      -h "$DB_HOST" \
+      -P "$DB_PORT" \
+      -u "$DB_USERNAME" \
+      --single-transaction \
+      --quick \
+      --routines \
+      --triggers \
+      --events \
+      "$DB_DATABASE"
+}
+
+db_export_to_file() {
+  local out="$1" dump=""
+
+  rm -f "$out"
+  if dump="$(detect_dump)"; then
+    compose_cmd exec -T -e MYSQL_PWD="$DB_PASSWORD" db "$dump" \
+      -u "$DB_USERNAME" \
+      --single-transaction \
+      --quick \
+      --routines \
+      --triggers \
+      --events \
+      "$DB_DATABASE" > "$out"
+  else
+    db_dump_fallback > "$out"
+  fi
+
+  if [[ ! -s "$out" ]]; then
+    rm -f "$out"
+    die "Database dump rỗng."
+  fi
 }
 
 command="${1:-help}"
@@ -66,19 +135,23 @@ case "$command" in
     exec env PROJECT_DIR="$PROJECT_DIR" "$CENTRAL_PLATFORM_DIR/scripts/compose.sh" exec -e MYSQL_PWD="$DB_PASSWORD" db "$CLIENT" -u "$DB_USERNAME" "$DB_DATABASE"
     ;;
   export)
-    DUMP="$(detect_dump)"
     OUT="${1:-$PROJECT_DIR/backup/database/${DB_DATABASE}_$(date +%Y%m%d_%H%M%S).sql}"
     [[ "$OUT" = /* ]] || OUT="$PROJECT_DIR/$OUT"
     mkdir -p "$(dirname "$OUT")"
-    compose_cmd exec -T -e MYSQL_PWD="$DB_PASSWORD" db "$DUMP" -u "$DB_USERNAME" --single-transaction --quick --routines --triggers --events "$DB_DATABASE" > "$OUT"
+    db_export_to_file "$OUT"
     success "Đã export: $OUT"
     ;;
   backup)
-    DUMP="$(detect_dump)"
     OUT="${1:-$PROJECT_DIR/backup/database/${DB_DATABASE}_$(date +%Y%m%d_%H%M%S).sql.gz}"
     [[ "$OUT" = /* ]] || OUT="$PROJECT_DIR/$OUT"
     mkdir -p "$(dirname "$OUT")"
-    compose_cmd exec -T -e MYSQL_PWD="$DB_PASSWORD" db "$DUMP" -u "$DB_USERNAME" --single-transaction --quick --routines --triggers --events "$DB_DATABASE" | gzip -c > "$OUT"
+    TMP="${OUT%.gz}.tmp.$$.sql"
+    trap 'rm -f "$TMP"' EXIT
+    db_export_to_file "$TMP"
+    gzip -c "$TMP" > "$OUT"
+    [[ -s "$OUT" ]] || die "Database backup gzip rỗng."
+    rm -f "$TMP"
+    trap - EXIT
     success "Đã backup: $OUT"
     ;;
   import|restore)
