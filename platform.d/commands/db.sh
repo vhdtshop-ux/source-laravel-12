@@ -38,32 +38,15 @@ DB_PORT="${DB_PORT:-3306}"
 ensure_db_service_running() {
   service_exists db || die "Compose project không có service db"
 
-  local cid=""
+  local cid status
   cid="$(compose_cmd ps -q db 2>/dev/null | head -n1 || true)"
-  if [[ -z "$cid" ]]; then
-    warn "Database container chưa chạy. Đang khởi động service db để backup/export..."
-    compose_cmd up -d db
-  fi
+  [[ -n "$cid" ]] || die "Không tìm thấy container db đang chạy"
 
-  local i
-  for i in $(seq 1 30); do
-    cid="$(compose_cmd ps -q db 2>/dev/null | head -n1 || true)"
-    if [[ -n "$cid" ]]; then
-      local status
-      status="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "$cid" 2>/dev/null || true)"
-      case "$status" in
-        healthy|running)
-          return 0
-          ;;
-        unhealthy|exited|dead)
-          die "Database container không sẵn sàng (status=$status)"
-          ;;
-      esac
-    fi
-    sleep 1
-  done
-
-  die "Database container không sẵn sàng sau khi khởi động"
+  status="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "$cid" 2>/dev/null || true)"
+  case "$status" in
+    healthy|running) return 0 ;;
+    *) die "Database container không sẵn sàng (status=${status:-unknown})" ;;
+  esac
 }
 
 detect_client() {
