@@ -35,7 +35,39 @@ DB_PORT="${DB_PORT:-3306}"
 [[ -n "$DB_DATABASE" ]] || die "Thiếu DB_DATABASE"
 [[ -n "$DB_USERNAME" ]] || die "Thiếu DB_USERNAME"
 
+ensure_db_service_running() {
+  service_exists db || die "Compose project không có service db"
+
+  local cid=""
+  cid="$(compose_cmd ps -q db 2>/dev/null | head -n1 || true)"
+  if [[ -z "$cid" ]]; then
+    warn "Database container chưa chạy. Đang khởi động service db để backup/export..."
+    compose_cmd up -d db
+  fi
+
+  local i
+  for i in $(seq 1 30); do
+    cid="$(compose_cmd ps -q db 2>/dev/null | head -n1 || true)"
+    if [[ -n "$cid" ]]; then
+      local status
+      status="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "$cid" 2>/dev/null || true)"
+      case "$status" in
+        healthy|running)
+          return 0
+          ;;
+        unhealthy|exited|dead)
+          die "Database container không sẵn sàng (status=$status)"
+          ;;
+      esac
+    fi
+    sleep 1
+  done
+
+  die "Database container không sẵn sàng sau khi khởi động"
+}
+
 detect_client() {
+  ensure_db_service_running
   if compose_cmd exec -T db sh -lc 'command -v mariadb' >/dev/null 2>&1; then echo mariadb
   elif compose_cmd exec -T db sh -lc 'command -v mysql' >/dev/null 2>&1; then echo mysql
   else die "Container db không có mariadb/mysql client"
@@ -43,6 +75,7 @@ detect_client() {
 }
 
 detect_dump() {
+  ensure_db_service_running
   if compose_cmd exec -T db sh -lc 'command -v mariadb-dump' >/dev/null 2>&1; then echo mariadb-dump
   elif compose_cmd exec -T db sh -lc 'command -v mysqldump' >/dev/null 2>&1; then echo mysqldump
   else return 1
@@ -56,6 +89,7 @@ db_exec() {
 
 db_container_network() {
   command -v docker >/dev/null 2>&1 || die "Thiếu docker cho database dump fallback"
+  ensure_db_service_running
 
   local cid network
   cid="$(compose_cmd ps -q db 2>/dev/null | head -n1)"
@@ -97,6 +131,7 @@ db_dump_fallback() {
 db_export_to_file() {
   local out="$1" dump=""
 
+  ensure_db_service_running
   rm -f "$out"
   if dump="$(detect_dump)"; then
     compose_cmd exec -T -e MYSQL_PWD="$DB_PASSWORD" db "$dump" \
